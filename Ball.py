@@ -1,3 +1,8 @@
+"""@file Ball.py
+
+This module contains the Ball class for the Pong game.
+"""
+
 import pygame
 import random
 
@@ -29,13 +34,11 @@ class Ball:
         # check collision with the paddle
         if (
             self.__posy >= paddle.posy - self.__radius
-            and paddle.posx
-            <= self.__posx
-            <= paddle.posx + paddle.width
+            and paddle.posx <= self.__posx <= paddle.posx + paddle.width
         ):
             # track the number of hits
             self.hit_count += 1
-            # increase the speed of the ball after every 5 hits
+            # increase the speed of the ball after every 2 hits
             self.__speedx += self.hit_count // 2
             self.__speedy += self.hit_count // 2
 
@@ -51,13 +54,6 @@ class Ball:
 
         # check collision with the bottom wall
         if self.__posy >= window.get_height() - self.__radius:
-            # self.__speedy = 3
-            # self.__speedx = random.choice([-3, 3])
-            # self.__speedy = 3
-            # self.__posx = window.get_width() // 2
-            # self.__posy = window.get_height() // 2
-            # self.hit_count = 0
-            # print("Game Over")
             return False
 
         return True

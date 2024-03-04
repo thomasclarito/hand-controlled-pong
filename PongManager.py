@@ -1,4 +1,4 @@
-"""@package PongManager
+"""@file PongManager.py
 
 This module contains the PongManager class for the Pong game.
 """
@@ -6,10 +6,10 @@ This module contains the PongManager class for the Pong game.
 import pygame
 
 import constants
+from constants import GameState
 from Ball import Ball
 from Paddle import Paddle
 from Pong import Pong
-from GameState import GameState
 
 
 class PongManager:

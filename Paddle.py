@@ -1,4 +1,4 @@
-"""@package Paddle
+"""@file Paddle
 
 This module contains the Paddle class for the Pong game.
 """

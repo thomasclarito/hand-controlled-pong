@@ -1,4 +1,4 @@
-"""@package Pong
+"""@file Pong
 
 This module contains the Pong class for the Pong game.
 """
@@ -6,7 +6,7 @@ This module contains the Pong class for the Pong game.
 import random
 from enum import Enum
 
-# Import the Ball and Paddle classes
+# Import the constants module, Ball, and Paddle classes
 import constants
 from Ball import Ball
 from Paddle import Paddle

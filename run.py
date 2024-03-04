@@ -1,4 +1,4 @@
-"""@package run.py
+"""@file run.py
 
 This module contains the main function for the Pong game.
 """
