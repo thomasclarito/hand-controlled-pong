@@ -14,7 +14,8 @@ from GameState import GameState
 
 class PongManager:
     def __init__(self, pong: Pong):
-        """Constructor for the PongManager class."""
+        """Constructor for the PongManager class.
+        Initialized pygame, font, the game window, and the game clock."""
         pygame.init()
         pygame.font.init()
         self.__window = pygame.display.set_mode(
