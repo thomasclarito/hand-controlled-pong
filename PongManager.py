@@ -145,11 +145,14 @@ class PongManager:
 
     def draw_gameover(self):
         """Display the game over screen.
-        Draw "Game Over" and "Press Space to Play" in the center of the screen.
+        Draw "Game Over" and "Press Space to play again" in the center of the screen.
         """
         gameover_text = self.__font.render("Game Over", True, constants.WHITE)
+        score_text = self.__font.render(
+            f"Your Score: {self.__pong.ball.hit_count}", True, constants.WHITE
+        )
         press_space_text = self.__font.render(
-            "Press Space to Play", True, constants.WHITE
+            "Press Space to play again", True, constants.WHITE
         )
         self.__window.fill(constants.BLACK)
         self.__window.blit(
@@ -160,10 +163,17 @@ class PongManager:
             ),
         )
         self.__window.blit(
+            score_text,
+            (
+                (constants.WINDOW_WIDTH - score_text.get_width()) // 2,
+                constants.WINDOW_HEIGHT // 2 ,
+            ),
+        )
+        self.__window.blit(
             press_space_text,
             (
                 (constants.WINDOW_WIDTH - press_space_text.get_width()) // 2,
-                constants.WINDOW_HEIGHT // 2,
+                constants.WINDOW_HEIGHT // 2 + press_space_text.get_height() + 10,
             ),
         )
 
