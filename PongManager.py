@@ -13,6 +13,10 @@ from Pong import Pong
 
 
 class PongManager:
+    """@class PongManager 
+      
+    Manages the game loop and the game states."""
+
     def __init__(self, pong: Pong):
         """Constructor for the PongManager class.
         Initialized pygame, font, the game window, and the game clock."""
