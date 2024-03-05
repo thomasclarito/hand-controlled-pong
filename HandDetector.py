@@ -32,14 +32,16 @@ class HandDetector:
                 hand_landmarks = results.multi_hand_landmarks[0]
                 index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
                 
-                return (int(index_tip.x * 800), int(index_tip.y * 600))
+                # return (int(index_tip.x * 800), int(index_tip.y * 600))
                 # print(int(index_tip.x * 800), int(index_tip.y * 600))
                 # Draw the hand landmarks on the frame
                 # mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
 
-        # # Display the frame with the hand landmarks
-        # cv2.imshow("Hand Tracking", frame)
+        # Display the frame with the hand landmarks
+        cv2.imshow("Hand Tracking", frame)
+        cv2.waitKey(1)
 
 # # Create an instance of the HandDetector class and run it
-# hand_detector = HandDetector()
-# hand_detector.run()
+hand_detector = HandDetector()
+while True:
+    hand_detector.get_pointer_location()
