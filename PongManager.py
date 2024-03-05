@@ -7,10 +7,12 @@ import pygame
 
 import constants
 from constants import GameState
+from Cursor import Cursor
 from Ball import Ball
+from HandDetector import HandDetector
 from Paddle import Paddle
 from Pong import Pong
-from HandDetector import HandDetector
+
 
 
 class PongManager:
@@ -24,15 +26,17 @@ class PongManager:
         pygame.init()
         pygame.display.set_caption("Pong")
         pygame.font.init()
+
+        self.__clock = pygame.time.Clock()
+        self.__current_state = GameState.INTRO
+        self.__cursor = Cursor()
+        self.__is_running = True
+        self.__font = pygame.font.SysFont("consolas", 30)
+        self.__hand_detector = HandDetector()
+        self.__pong = pong
         self.__window = pygame.display.set_mode(
             (constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
         )
-        self.__clock = pygame.time.Clock()
-        self.__is_running = True
-        self.__current_state = GameState.INTRO
-        self.__font = pygame.font.SysFont("consolas", 30)
-        self.__pong = pong
-        self.__hand_detector = HandDetector()
 
     def run(self):
         """Run the game loop.
@@ -43,6 +47,7 @@ class PongManager:
         """
 
         while self.__is_running:
+            self.__cursor = self.__hand_detector.get_pointer_location(self.__cursor)
             if self.__current_state == GameState.INTRO:
                 self.handle_intro_state()
             elif self.__current_state == GameState.PLAY:
@@ -74,23 +79,12 @@ class PongManager:
         """Handle the play state events.
         Updates the current state to game over when the ball hits the bottom wall.
 
-        The player's paddle is moved based on the left and right arrow keys.
+        The player's paddle is moved based on the cursor's position.
         THe ball is moved and checked for collision with the player's paddle.
-
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__is_running = False
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and self.__pong.player_paddle.posx > 0:
-            self.__pong.player_paddle.move_left()
-        if (
-            keys[pygame.K_RIGHT]
-            and self.__pong.player_paddle.posx
-            < constants.WINDOW_WIDTH - self.__pong.player_paddle.width
-        ):
-            self.__pong.player_paddle.move_right()
 
         self.__pong.ball.move()
         if not self.__pong.ball.check_collision(
@@ -120,11 +114,14 @@ class PongManager:
         """Display the intro screen.
         Draw "Pong" and "Press Space to Play" in the center of the screen.
         """
+        self.__window.fill(constants.BLACK)
+        if self.__cursor:
+            self.__cursor.display(self.__window)
+
         intro_text = self.__font.render("Pong", True, constants.WHITE)
         press_space_text = self.__font.render(
             "Press Space to Play", True, constants.WHITE
         )
-        self.__window.fill(constants.BLACK)
         self.__window.blit(
             intro_text,
             (
@@ -144,12 +141,12 @@ class PongManager:
         """Display the game screen.
         Draw the player's paddle, the ball, and the score.
         """
+        if self.__cursor:
+            self.__cursor.display(self.__window)
+            self.__pong.player_paddle.update(self.__cursor.posx)
+
         self.__pong.player_paddle.display(self.__window)
         self.__pong.ball.display(self.__window)
-        cursor = self.__hand_detector.get_pointer_location()
-        if cursor:
-            pygame.draw.rect(self.__window, constants.RED, (cursor[0], cursor[1], 2, 2))
-            self.__pong.player_paddle.update(cursor)
         score = self.__font.render(
             f"Score: {self.__pong.ball.hit_count}", True, constants.WHITE
         )
@@ -159,6 +156,7 @@ class PongManager:
         """Display the game over screen.
         Draw "Game Over" and "Press Space to play again" in the center of the screen.
         """
+        self.__window.fill(constants.BLACK)
         gameover_text = self.__font.render("Game Over", True, constants.WHITE)
         score_text = self.__font.render(
             f"Your Score: {self.__pong.ball.hit_count}", True, constants.WHITE
@@ -166,7 +164,6 @@ class PongManager:
         press_space_text = self.__font.render(
             "Press Space to play again", True, constants.WHITE
         )
-        self.__window.fill(constants.BLACK)
         self.__window.blit(
             gameover_text,
             (
@@ -191,4 +188,5 @@ class PongManager:
 
     def cleanup(self):
         """Quit the game."""
+        self.__hand_detector.cleanup()
         pygame.quit()

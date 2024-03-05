@@ -15,7 +15,6 @@ from Paddle import Paddle
 # Paddle parameters
 paddle_width = 80
 paddle_height = 10
-paddle_speed = 8
 
 init_paddle_x = constants.WINDOW_WIDTH // 2 - paddle_width // 2
 init_paddle_y = constants.WINDOW_HEIGHT - paddle_height - 20
@@ -34,7 +33,7 @@ class Pong:
             init_ball_x, init_ball_y, ball_radius, init_ball_speed_x, init_ball_speed_y
         )
         self.player_paddle = Paddle(
-            init_paddle_x, init_paddle_y, paddle_width, paddle_height, paddle_speed
+            init_paddle_x, init_paddle_y, paddle_width, paddle_height
         )
 
     def reset(self):
@@ -42,5 +41,5 @@ class Pong:
             init_ball_x, init_ball_y, ball_radius, init_ball_speed_x, init_ball_speed_y
         )
         self.player_paddle = Paddle(
-            init_paddle_x, init_paddle_y, paddle_width, paddle_height, paddle_speed
+            init_paddle_x, init_paddle_y, paddle_width, paddle_height
         )

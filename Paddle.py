@@ -4,29 +4,26 @@ This module contains the Paddle class for the Pong game.
 """
 
 import pygame
-
-from constants import WHITE
+import constants
 
 class Paddle:
-    def __init__(self, pos_x: int, pos_y: int, width: int, height: int, speed: int):
+    def __init__(self, pos_x: int, pos_y: int, width: int, height: int):
         self.posx = pos_x
         self.posy = pos_y
         self.width = width
         self.height = height
-        self.__speed = speed
 
-    def move_left(self):
-        self.posx -= self.__speed
-
-    def move_right(self):
-        self.posx += self.__speed
-
-    def update(self, position: tuple[int, int]):
-        self.posx = position[0]
+    def update(self, cursor_x: int):
+        if cursor_x < 0:
+            self.posx = 0
+        elif cursor_x > constants.WINDOW_WIDTH - self.width:
+            self.posx = constants.WINDOW_WIDTH - self.width
+        else:
+            self.posx = cursor_x
         
     def display(self, window: pygame.Surface):
         pygame.draw.rect(
             window,
-            WHITE,
+            constants.WHITE,
             (self.posx, self.posy, self.width, self.height),
         )

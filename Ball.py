@@ -7,8 +7,8 @@ import pygame
 import random
 
 # Import the Paddle class
-import Paddle
 from constants import WHITE
+import Paddle
 
 ## Ball class for the pong game
 #
