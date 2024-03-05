@@ -73,6 +73,9 @@ class PongManager:
                 if event.key == pygame.K_SPACE:
                     self.__current_state = GameState.PLAY
 
+        if self.__hand_detector.check_gesture():
+            self.__current_state = GameState.PLAY
+
         self.draw_intro()
 
     def handle_play_state(self):
@@ -107,6 +110,10 @@ class PongManager:
                 if event.key == pygame.K_SPACE:
                     self.__pong.reset()
                     self.__current_state = GameState.PLAY
+
+        if self.__hand_detector.check_gesture():
+            self.__pong.reset()
+            self.__current_state = GameState.PLAY
 
         self.draw_gameover()
 
