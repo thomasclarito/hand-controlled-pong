@@ -8,7 +8,7 @@ import random
 
 # Import the Paddle class
 import Paddle
-
+from constants import WHITE
 
 ## Ball class for the pong game
 #
@@ -27,7 +27,7 @@ class Ball:
 
     def display(self, window: pygame.Surface):
         pygame.draw.circle(
-            window, (255, 255, 255), (self.__posx, self.__posy), self.__radius
+            window, WHITE, (self.__posx, self.__posy), self.__radius
         )
 
     def check_collision(self, paddle: Paddle, window: pygame.Surface) -> bool:

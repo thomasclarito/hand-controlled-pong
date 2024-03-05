@@ -5,6 +5,7 @@ This module contains the Paddle class for the Pong game.
 
 import pygame
 
+from constants import WHITE
 
 class Paddle:
     def __init__(self, pos_x: int, pos_y: int, width: int, height: int, speed: int):
@@ -20,9 +21,12 @@ class Paddle:
     def move_right(self):
         self.posx += self.__speed
 
+    def update(self, position: tuple[int, int]):
+        self.posx = position[0]
+        
     def display(self, window: pygame.Surface):
         pygame.draw.rect(
             window,
-            (255, 255, 255),
+            WHITE,
             (self.posx, self.posy, self.width, self.height),
         )

@@ -6,6 +6,7 @@ from enum import Enum
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+RED = (255, 0, 0)
 
 # Window dimensions
 WINDOW_WIDTH = 800

@@ -10,6 +10,7 @@ from constants import GameState
 from Ball import Ball
 from Paddle import Paddle
 from Pong import Pong
+from HandDetector import HandDetector
 
 
 class PongManager:
@@ -21,6 +22,7 @@ class PongManager:
         """Constructor for the PongManager class.
         Initialized pygame, font, the game window, and the game clock."""
         pygame.init()
+        pygame.display.set_caption("Pong")
         pygame.font.init()
         self.__window = pygame.display.set_mode(
             (constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
@@ -30,6 +32,7 @@ class PongManager:
         self.__current_state = GameState.INTRO
         self.__font = pygame.font.SysFont("consolas", 30)
         self.__pong = pong
+        self.__hand_detector = HandDetector()
 
     def run(self):
         """Run the game loop.
@@ -143,6 +146,10 @@ class PongManager:
         """
         self.__pong.player_paddle.display(self.__window)
         self.__pong.ball.display(self.__window)
+        cursor = self.__hand_detector.get_pointer_location()
+        if cursor:
+            pygame.draw.rect(self.__window, constants.RED, (cursor[0], cursor[1], 2, 2))
+            self.__pong.player_paddle.update(cursor)
         score = self.__font.render(
             f"Score: {self.__pong.ball.hit_count}", True, constants.WHITE
         )

@@ -10,7 +10,7 @@ class HandDetector:
 
     def get_pointer_location(self) -> tuple[int, int]:
         """Get the location of the index finger tip."""
-        
+
         # Read the current frame from the webcam
         ret, frame = self.cap.read()
 
@@ -31,15 +31,19 @@ class HandDetector:
             if classification.label == "Right":
                 hand_landmarks = results.multi_hand_landmarks[0]
                 index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
-                
-                return (int(index_tip.x * 800), int(index_tip.y * 600))
-                # print(int(index_tip.x * 800), int(index_tip.y * 600))
                 # Draw the hand landmarks on the frame
                 # mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
+                # Display the frame with the hand landmarks
+                return (int(index_tip.x * 800), int(index_tip.y * 600))
+                # print(int(index_tip.x * 800), int(index_tip.y * 600))
 
-        # # Display the frame with the hand landmarks
         # cv2.imshow("Hand Tracking", frame)
+        # cv2.waitKey(1)
+    
+
+# TODO: Create a new cursor class that tracks the index finger tip and displays it on the screen
 
 # # Create an instance of the HandDetector class and run it
 # hand_detector = HandDetector()
-# hand_detector.run()
+# while True:
+#     hand_detector.get_pointer_location()
