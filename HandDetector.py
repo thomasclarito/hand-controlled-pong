@@ -31,11 +31,11 @@ class HandDetector:
             if classification.label == "Right":
                 hand_landmarks = results.multi_hand_landmarks[0]
                 index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
-                
-                # return (int(index_tip.x * 800), int(index_tip.y * 600))
-                # print(int(index_tip.x * 800), int(index_tip.y * 600))
                 # Draw the hand landmarks on the frame
-                # mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
+                print(index_tip.z)
+                mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
+                # return (int(index_tip.x * 800), int(index_tip.y * 600))
+
 
         # Display the frame with the hand landmarks
         cv2.imshow("Hand Tracking", frame)
