@@ -4,7 +4,6 @@ Welcome to the Hand Controlled Pong Game! This Python project allows you to play
 
 ## Getting Started
 
-
 ### Installation
 
 Clone or download this repository to your local machine.
@@ -54,8 +53,4 @@ The paddle position follows your index finger. There is a red cursor to show you
 
 To quit the game simply gesture thumbs down in the game over screen or the intro streen.
 
-
-
-
-
-
+## Demo video
