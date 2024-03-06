@@ -1,6 +1,15 @@
 # Hand Controlled Pong Game
 
-Welcome to the Hand Controlled Pong Game! This Python project allows you to play the classic game of Pong using hand gestures detected via a webcam. It utilizes computer vision techniques to track the movement of your hand and translate it into paddle movements within the game.
+Welcome to the Hand Controlled Pong Game! This Python project allows you to play the classic game of Pong using hand gestures detected via a webcam. It utilizes computer vision to track the movement of your hand and translate it into paddle movements within the game.
+
+This version of Pong is single-player. Your goal is to bounce the ball for as long as possible without it touching the bottom wall.
+The program tracks your hand movements and gestures to control the game. 
+Starting the game is controlled by a thumbs up gesture.
+Quitting the game is controlled by a thumbs down gesture.
+The paddle's location in game is dependent on the location your index finger on the camera.
+There is a little crosshair to help the user locate where the finger is detected.
+A single player highscore system is added for the competitive players.
+
 
 ## Getting Started
 
