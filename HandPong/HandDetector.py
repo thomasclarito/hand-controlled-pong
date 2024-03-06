@@ -118,6 +118,9 @@ class HandDetector:
         Args:
             frame (np.ndarray): The frame to draw the landmarks on
             landmarks (mp.HandLandmarkList): The list of landmarks to draw
+
+        Returns:
+            frame (np.ndarray): The frame with the landmarks drawn on it
         """
 
         # Draw the hand landmarks of the first hand detected
