@@ -61,5 +61,3 @@ To move the pong paddle simply move your hand on the screen.
 The paddle position follows your index finger. There is a red cursor to show you where your finger is being detected.
 
 To quit the game simply gesture thumbs down in the game over screen or the intro streen.
-
-## Demo video
