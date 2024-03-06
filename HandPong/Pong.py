@@ -22,8 +22,8 @@ init_paddle_y = constants.WINDOW_HEIGHT - paddle_height - 20
 
 # Ball parameters
 ball_radius = 10
-init_ball_speed_x = random.choice([-4, 4])
-init_ball_speed_y = 4
+init_ball_speed_x = random.choice([-5, 5])
+init_ball_speed_y = 5
 init_ball_x = constants.WINDOW_WIDTH // 2
 init_ball_y = constants.WINDOW_HEIGHT // 2
 
