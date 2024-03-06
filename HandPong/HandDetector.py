@@ -5,6 +5,11 @@ This module contains the HandDetector class for detecting hand gestures and land
 
 import cv2
 import mediapipe as mp
+from mediapipe.framework.formats import landmark_pb2
+from mediapipe.tasks.python.components.containers.landmark import (
+    NormalizedLandmark,
+)
+import numpy as np
 import os
 
 from .constants import WINDOW_HEIGHT
@@ -21,7 +26,7 @@ model_path = os.path.abspath("./models/gesture_recognizer.task")
 class HandDetector:
     def __init__(self):
         """The constructor for the HandDetector class."""
-        
+
         # Create a GestureRecognizerOptions object to specify the model and the running mode
         options = GestureRecognizerOptions(
             base_options=BaseOptions(model_asset_path=model_path),
@@ -56,9 +61,17 @@ class HandDetector:
             index_tip = result.hand_landmarks[0][
                 mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP
             ]
+
+            # Draw the hand landmarks on the frame
+            frame = self.draw_landmarks(frame, result.hand_landmarks[0])
+
             # Update the cursor location to the location of the index finger
             cursor.posx = int(index_tip.x * WINDOW_WIDTH)
             cursor.posy = int(index_tip.y * WINDOW_HEIGHT)
+
+        # Display the frame
+        cv2.imshow("Hand Tracking", frame)
+        cv2.waitKey(1)
 
         return cursor
 
@@ -83,14 +96,45 @@ class HandDetector:
             )
             result = self.detector.recognize(mp_image)
 
+            if result.hand_landmarks:
+                frame = self.draw_landmarks(frame, result.hand_landmarks[0])
+
+            cv2.imshow("Hand Tracking", frame)
+            cv2.waitKey(1)
+
             if result.gestures:
-                print(result.gestures[0][0])
                 if result.gestures[0][0].category_name == gesture:
                     continue
 
             return False
 
         return True
+
+    def draw_landmarks(
+        self, frame: np.ndarray, landmarks: NormalizedLandmark
+    ) -> np.ndarray:
+        """Display the hand landmarks from the results of the detector on the frame.
+
+        Args:
+            frame (np.ndarray): The frame to draw the landmarks on
+            landmarks (mp.HandLandmarkList): The list of landmarks to draw
+        """
+
+        # Draw the hand landmarks of the first hand detected
+        hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
+        hand_landmarks_proto.landmark.extend(
+            [
+                landmark_pb2.NormalizedLandmark(
+                    x=landmark.x, y=landmark.y, z=landmark.z
+                )
+                for landmark in landmarks
+            ]
+        )
+        mp.solutions.drawing_utils.draw_landmarks(
+            frame, hand_landmarks_proto, mp.solutions.hands.HAND_CONNECTIONS
+        )
+
+        return frame
 
     def cleanup(self):
         # Release the VideoCapture object
