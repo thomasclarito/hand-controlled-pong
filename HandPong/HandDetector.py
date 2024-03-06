@@ -1,3 +1,8 @@
+"""@file HandDetector.py
+
+This module contains the HandDetector class for detecting hand gestures and landmarks.
+"""
+
 import cv2
 import mediapipe as mp
 import os
@@ -15,6 +20,9 @@ model_path = os.path.abspath("./models/gesture_recognizer.task")
 
 class HandDetector:
     def __init__(self):
+        """The constructor for the HandDetector class."""
+        
+        # Create a GestureRecognizerOptions object to specify the model and the running mode
         options = GestureRecognizerOptions(
             base_options=BaseOptions(model_asset_path=model_path),
             running_mode=VisionRunningMode.IMAGE,
@@ -26,7 +34,14 @@ class HandDetector:
         self.detector = GestureRecognizer.create_from_options(options)
 
     def get_pointer_location(self, cursor: Cursor) -> Cursor:
-        """Get the location of the index finger tip."""
+        """Get the location of the index finger tip.
+
+        Args:
+            cursor (Cursor): The cursor object, encapsulating the position of the cursor
+
+        Returns:
+            Cursor: The updated cursor object with the new position of the index finger tip
+        """
 
         # Read the current frame from the webcam
         ret, frame = self.cap.read()
@@ -47,8 +62,15 @@ class HandDetector:
 
         return cursor
 
-    def check_gesture(self) -> bool:
-        """Check if the user is making a thumbs up gesture for 20 consecutive frames."""
+    def check_gesture(self, gesture: str) -> bool:
+        """Check if the user is making specified gesture for 20 consecutive frames.
+
+        Args:
+            gesture (str): The gesture to recognize
+
+        Returns:
+            bool: True if the gesture is recognized for 20 consecutive frames, False otherwise
+        """
         for i in range(20):
             # Read the current frame from the webcam
 
@@ -62,7 +84,8 @@ class HandDetector:
             result = self.detector.recognize(mp_image)
 
             if result.gestures:
-                if result.gestures[0][0].category_name == "Thumb_Up":
+                print(result.gestures[0][0])
+                if result.gestures[0][0].category_name == gesture:
                     continue
 
             return False

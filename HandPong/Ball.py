@@ -6,7 +6,7 @@ This module contains the Ball class for the Pong game.
 import pygame
 
 # Import the Paddle class
-from .constants import WHITE
+from . import constants
 from .Paddle import Paddle
 
 
@@ -16,6 +16,15 @@ class Ball:
     def __init__(
         self, pos_x: int, pos_y: int, radius: int, speed_x: int, speed_y: int
     ):
+        """The constructor for the Ball class.
+
+        Args:
+            pos_x (int): the x-coordinate of the ball in the window, as pixels
+            pos_y (int): the y-coordinate of the ball in the window, as pixels
+            radius (int): the radius of the ball, as pixels
+            speed_x (int): the speed of the ball in the x-direction
+            speed_y (int): the speed of the ball in the y-direction
+        """
         self.__posx = pos_x
         self.__posy = pos_y
         self.__radius = radius
@@ -24,16 +33,29 @@ class Ball:
         self.hit_count = 0
 
     def move(self):
+        """Move the ball in the window."""
         self.__posx += self.__speedx
         self.__posy += self.__speedy
 
     def display(self, window: pygame.Surface):
+        """Draw the ball on the screen.
+        
+        Args:
+            window (pygame.Surface): the game window to display the ball
+        """
         pygame.draw.circle(
-            window, WHITE, (self.__posx, self.__posy), self.__radius
+            window, constants.WHITE, (self.__posx, self.__posy), self.__radius
         )
 
-    def check_collision(self, paddle: Paddle, window: pygame.Surface) -> bool:
-        # check collision with the paddle
+    def check_collision(self, paddle: Paddle) -> bool:
+        """Check for collision of the ball with the paddle and the walls.
+
+        Args:
+            paddle (Paddle): the paddle object, to check for collision with the ball
+
+        Returns:
+            bool: True if the ball is still in play, False if the ball is out of play
+        """
         if (
             self.__posy >= paddle.posy - self.__radius
             and paddle.posx <= self.__posx <= paddle.posx + paddle.width
@@ -50,7 +72,7 @@ class Ball:
         # check collision with the side walls
         if (
             self.__posx <= 0
-            or self.__posx >= window.get_width() - self.__radius
+            or self.__posx >= constants.WINDOW_WIDTH - self.__radius
         ):
             self.__speedx = -self.__speedx
         # check collision with the top wall
@@ -58,7 +80,7 @@ class Ball:
             self.__speedy = -self.__speedy
 
         # check collision with the bottom wall
-        if self.__posy >= window.get_height() - self.__radius:
+        if self.__posy >= constants.WINDOW_HEIGHT - self.__radius:
             return False
 
         return True

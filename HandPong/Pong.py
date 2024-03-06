@@ -30,10 +30,7 @@ init_ball_y = constants.WINDOW_HEIGHT // 2
 
 class Pong:
     def __init__(self):
-        """Constructor for the Pong game.
-
-        Initializes the Ball, the Paddle, and the saved hiscore.
-        """
+        """The constructor for the Pong class"""
         self.ball = Ball(
             init_ball_x,
             init_ball_y,
@@ -55,10 +52,11 @@ class Pong:
     def update_hiscore(self):
         """Update the hiscore of the Pong game."""
         self.hiscore = max(self.hiscore, self.ball.hit_count)
-        with open("score.dat", "wb") as file:
+        with open("./score.dat", "wb") as file:
             pickle.dump(self.hiscore, file)
 
     def reset(self):
+        """Reset the ball and paaddle to their initial positions."""
         self.ball = Ball(
             init_ball_x,
             init_ball_y,

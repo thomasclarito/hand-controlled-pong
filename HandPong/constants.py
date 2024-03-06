@@ -1,6 +1,8 @@
 """ constants.py
+
 This module contains constants for the game.
 """
+
 from enum import Enum
 
 # Colors
@@ -12,6 +14,8 @@ RED = (255, 0, 0)
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
+THUMBS_UP = "Thumb_Up"
+THUMBS_DOWN = "Thumb_Down"
 
 class GameState(Enum):
     INTRO = 1

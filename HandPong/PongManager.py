@@ -24,6 +24,9 @@ class PongManager:
         """Constructor for the PongManager class.
         Initializes pygame, font for displaying text,
         the game window, the pong game, and the game clock.
+
+        Args:
+            pong (Pong): The pong game object
         """
         pygame.init()
         pygame.display.set_caption("Pong")
@@ -47,7 +50,6 @@ class PongManager:
         The play state contains the main game loop.
         The game over state displays the game over message and a prompt to restart the game.
         """
-
         while self.__is_running:
             self.__cursor = self.__hand_detector.get_pointer_location(
                 self.__cursor
@@ -73,12 +75,11 @@ class PongManager:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__is_running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.__current_state = GameState.PLAY
 
-        if self.__hand_detector.check_gesture():
+        if self.__hand_detector.check_gesture(constants.THUMBS_UP):
             self.__current_state = GameState.PLAY
+        if self.__hand_detector.check_gesture(constants.THUMBS_DOWN):
+            self.__is_running = False
 
         self.draw_intro()
 
@@ -94,9 +95,7 @@ class PongManager:
                 self.__is_running = False
 
         self.__pong.ball.move()
-        if not self.__pong.ball.check_collision(
-            self.__pong.player_paddle, self.__window
-        ):
+        if not self.__pong.ball.check_collision(self.__pong.player_paddle):
             self.__current_state = GameState.GAME_OVER
             return
         self.__window.fill(constants.BLACK)
@@ -110,15 +109,13 @@ class PongManager:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__is_running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.__pong.reset()
-                    self.__current_state = GameState.PLAY
 
         self.__pong.update_hiscore()
-        if self.__hand_detector.check_gesture():
+        if self.__hand_detector.check_gesture(constants.THUMBS_UP):
             self.__pong.reset()
             self.__current_state = GameState.PLAY
+        elif self.__hand_detector.check_gesture(constants.THUMBS_DOWN):
+            self.__is_running = False
 
         self.draw_gameover()
 
@@ -134,6 +131,9 @@ class PongManager:
         press_space_text = self.__font.render(
             "Thumbs Up to Play!", True, constants.WHITE
         )
+        quit_text = self.__font.render(
+            "Thumbs Down to Quit!", True, constants.WHITE
+        )
         self.__window.blit(
             intro_text,
             (
@@ -146,6 +146,13 @@ class PongManager:
             (
                 (constants.WINDOW_WIDTH - press_space_text.get_width()) // 2,
                 constants.WINDOW_HEIGHT // 2,
+            ),
+        )
+        self.__window.blit(
+            quit_text,
+            (
+                (constants.WINDOW_WIDTH - quit_text.get_width()) // 2,
+                constants.WINDOW_HEIGHT - quit_text.get_height() - 10,
             ),
         )
 
@@ -177,27 +184,32 @@ class PongManager:
             f"High Score: {self.__pong.hiscore}", True, constants.WHITE
         )
         press_space_text = self.__font.render(
-            "Thumbs Up to play again", True, constants.WHITE
+            "Thumbs Up to play again!", True, constants.WHITE
+        )
+        quit_text = self.__font.render(
+            "Thumbs Down to Quit!", True, constants.WHITE
         )
         self.__window.blit(
             gameover_text,
             (
                 (constants.WINDOW_WIDTH - gameover_text.get_width()) // 2,
-                constants.WINDOW_HEIGHT // 2 - gameover_text.get_height() - 10,
+                constants.WINDOW_HEIGHT // 2
+                - 2 * gameover_text.get_height()
+                - 15,
             ),
         )
         self.__window.blit(
             score_text,
             (
                 (constants.WINDOW_WIDTH - score_text.get_width()) // 2,
-                constants.WINDOW_HEIGHT // 2,
+                constants.WINDOW_HEIGHT // 2 - score_text.get_height() - 5,
             ),
         )
         self.__window.blit(
             hiscore_text,
             (
                 (constants.WINDOW_WIDTH - hiscore_text.get_width()) // 2,
-                constants.WINDOW_HEIGHT // 2 + hiscore_text.get_height() + 10,
+                constants.WINDOW_HEIGHT // 2 + 5,
             ),
         )
         self.__window.blit(
@@ -206,12 +218,18 @@ class PongManager:
                 (constants.WINDOW_WIDTH - press_space_text.get_width()) // 2,
                 constants.WINDOW_HEIGHT // 2
                 + press_space_text.get_height()
-                + hiscore_text.get_height()
-                + 10,
+                + 15,
+            ),
+        )
+        self.__window.blit(
+            quit_text,
+            (
+                (constants.WINDOW_WIDTH - quit_text.get_width()) // 2,
+                constants.WINDOW_HEIGHT - quit_text.get_height() - 10,
             ),
         )
 
     def cleanup(self):
-        """Quit the game."""
+        """Cleanup the hand detector and quit pygame."""
         self.__hand_detector.cleanup()
         pygame.quit()
