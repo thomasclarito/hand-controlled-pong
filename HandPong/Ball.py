@@ -4,16 +4,18 @@ This module contains the Ball class for the Pong game.
 """
 
 import pygame
-import random
 
 # Import the Paddle class
-from constants import WHITE
-import Paddle
+from .constants import WHITE
+from .Paddle import Paddle
 
-## Ball class for the pong game
+
+# Ball class for the pong game
 #
 class Ball:
-    def __init__(self, pos_x: int, pos_y: int, radius: int, speed_x: int, speed_y: int):
+    def __init__(
+        self, pos_x: int, pos_y: int, radius: int, speed_x: int, speed_y: int
+    ):
         self.__posx = pos_x
         self.__posy = pos_y
         self.__radius = radius
@@ -46,7 +48,10 @@ class Ball:
             self.__speedy = -abs(self.__speedy)
 
         # check collision with the side walls
-        if self.__posx <= 0 or self.__posx >= window.get_width() - self.__radius:
+        if (
+            self.__posx <= 0
+            or self.__posx >= window.get_width() - self.__radius
+        ):
             self.__speedx = -self.__speedx
         # check collision with the top wall
         if self.__posy <= 0:

@@ -7,11 +7,12 @@ import pygame
 from enum import Enum
 
 # Import the Pong and PongManager classes
-from PongManager import PongManager
-from Pong import Pong
+from HandPong.PongManager import PongManager
+from HandPong.Pong import Pong
 
 
 def main():
+    """Run the Pong game."""
     pong = Pong()
     gm = PongManager(pong)
     gm.run()

@@ -5,24 +5,26 @@ This module contains the PongManager class for the Pong game.
 
 import pygame
 
-import constants
-from constants import GameState
-from Cursor import Cursor
-from Ball import Ball
-from HandDetector import HandDetector
-from Paddle import Paddle
-from Pong import Pong
-
+from . import constants
+from .constants import GameState
+from .Cursor import Cursor
+from .Ball import Ball
+from .HandDetector import HandDetector
+from .Paddle import Paddle
+from .Pong import Pong
 
 
 class PongManager:
-    """@class PongManager 
-      
-    Manages the game loop and the game states."""
+    """@class PongManager
+
+    Manages the game loop and the game states.
+    """
 
     def __init__(self, pong: Pong):
         """Constructor for the PongManager class.
-        Initialized pygame, font, the game window, and the game clock."""
+        Initializes pygame, font for displaying text,
+        the game window, the pong game, and the game clock.
+        """
         pygame.init()
         pygame.display.set_caption("Pong")
         pygame.font.init()
@@ -47,7 +49,9 @@ class PongManager:
         """
 
         while self.__is_running:
-            self.__cursor = self.__hand_detector.get_pointer_location(self.__cursor)
+            self.__cursor = self.__hand_detector.get_pointer_location(
+                self.__cursor
+            )
             if self.__current_state == GameState.INTRO:
                 self.handle_intro_state()
             elif self.__current_state == GameState.PLAY:
@@ -83,7 +87,7 @@ class PongManager:
         Updates the current state to game over when the ball hits the bottom wall.
 
         The player's paddle is moved based on the cursor's position.
-        THe ball is moved and checked for collision with the player's paddle.
+        The ball is moved and checked for collision with the player's paddle.
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -111,6 +115,7 @@ class PongManager:
                     self.__pong.reset()
                     self.__current_state = GameState.PLAY
 
+        self.__pong.update_hiscore()
         if self.__hand_detector.check_gesture():
             self.__pong.reset()
             self.__current_state = GameState.PLAY
@@ -127,7 +132,7 @@ class PongManager:
 
         intro_text = self.__font.render("Pong", True, constants.WHITE)
         press_space_text = self.__font.render(
-            "Press Space to Play", True, constants.WHITE
+            "Thumbs Up to Play!", True, constants.WHITE
         )
         self.__window.blit(
             intro_text,
@@ -168,8 +173,11 @@ class PongManager:
         score_text = self.__font.render(
             f"Your Score: {self.__pong.ball.hit_count}", True, constants.WHITE
         )
+        hiscore_text = self.__font.render(
+            f"High Score: {self.__pong.hiscore}", True, constants.WHITE
+        )
         press_space_text = self.__font.render(
-            "Press Space to play again", True, constants.WHITE
+            "Thumbs Up to play again", True, constants.WHITE
         )
         self.__window.blit(
             gameover_text,
@@ -182,14 +190,24 @@ class PongManager:
             score_text,
             (
                 (constants.WINDOW_WIDTH - score_text.get_width()) // 2,
-                constants.WINDOW_HEIGHT // 2 ,
+                constants.WINDOW_HEIGHT // 2,
+            ),
+        )
+        self.__window.blit(
+            hiscore_text,
+            (
+                (constants.WINDOW_WIDTH - hiscore_text.get_width()) // 2,
+                constants.WINDOW_HEIGHT // 2 + hiscore_text.get_height() + 10,
             ),
         )
         self.__window.blit(
             press_space_text,
             (
                 (constants.WINDOW_WIDTH - press_space_text.get_width()) // 2,
-                constants.WINDOW_HEIGHT // 2 + press_space_text.get_height() + 10,
+                constants.WINDOW_HEIGHT // 2
+                + press_space_text.get_height()
+                + hiscore_text.get_height()
+                + 10,
             ),
         )
 

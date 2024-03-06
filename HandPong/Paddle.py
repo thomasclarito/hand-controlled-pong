@@ -1,10 +1,11 @@
-"""@file Paddle
+"""@file Paddle.py
 
 This module contains the Paddle class for the Pong game.
 """
 
 import pygame
-import constants
+from . import constants
+
 
 class Paddle:
     def __init__(self, pos_x: int, pos_y: int, width: int, height: int):
@@ -20,7 +21,7 @@ class Paddle:
             self.posx = constants.WINDOW_WIDTH - self.width
         else:
             self.posx = cursor_x
-        
+
     def display(self, window: pygame.Surface):
         pygame.draw.rect(
             window,
